@@ -40,6 +40,12 @@ const StartGameScreen = () => {
     setSelectedNumber(+enteredValue);
   };
 
+  let confirmedOutput = null;
+
+  if (confirmed) {
+    confirmedOutput = <Text>Choosen number: {selectedNumber}</Text>;
+  }
+
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard}>
       <View style={styles.screen}>
@@ -73,6 +79,7 @@ const StartGameScreen = () => {
             </View>
           </View>
         </Card>
+        {confirmedOutput}
       </View>
     </TouchableWithoutFeedback>
   );
