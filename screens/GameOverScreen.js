@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Button, Image } from "react-native";
+import { View, Text, StyleSheet, Button, Image } from "react-native";
 
 import BodyText from "../components/BodyText";
 import TitleText from "../components/TitleText";
@@ -11,10 +11,22 @@ const GameOverScreen = ({ roundsNumber, userNumber, onReset }) => {
     <View style={styles.screen}>
       <TitleText>The Game is Over!</TitleText>
       <View style={styles.imageContainer}>
-        <Image source={SuccessImage} style={styles.image} resizeMode="cover" />
+        <Image
+          fadeDuration={300}
+          source={SuccessImage}
+          style={styles.image}
+          resizeMode="cover"
+        />
       </View>
-      <BodyText>Number of rounds: {roundsNumber}</BodyText>
-      <BodyText>Number was: {userNumber} </BodyText>
+      <View style={styles.resultContainer}>
+        <BodyText style={styles.resultText}>
+          I only needed <Text style={styles.highlightText}>{roundsNumber}</Text>{" "}
+          tries to guess the number!
+        </BodyText>
+        <BodyText style={styles.resultText}>
+          Number was: <Text style={styles.highlightText}>{userNumber}</Text>.
+        </BodyText>
+      </View>
       <Button title="New Game" onPress={onReset} />
     </View>
   );
@@ -37,6 +49,18 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     borderWidth: 3,
     borderColor: "black",
+  },
+  highlightText: {
+    color: "green",
+    fontFamily: "open-sans-bold",
+  },
+  resultContainer: {
+    marginHorizontal: 30,
+    marginVertical: 15,
+  },
+  resultText: {
+    textAlign: "center",
+    fontSize: 20,
   },
 });
 
