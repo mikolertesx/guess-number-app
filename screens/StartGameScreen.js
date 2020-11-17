@@ -3,18 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
 } from "react-native";
 
+import TitleText from "../components/TitleText";
+import BodyText from "../components/BodyText";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
-import TitleText from "../components/TitleText";
-import BodyText from "../components/BodyText";
 import Colors from "../constants/colors";
+import MainButton from "../components/MainButton";
 
 const StartGameScreen = ({ onStartGame }) => {
   const [enteredValue, setEnteredValue] = useState("");
@@ -63,7 +63,7 @@ const StartGameScreen = ({ onStartGame }) => {
       <Card style={styles.summaryContainer}>
         <Text>You selected</Text>
         <NumberContainer>{selectedNumber}</NumberContainer>
-        <Button
+        <MainButton
           title="START GAME"
           onPress={() => onStartGame(selectedNumber)}
         />
@@ -88,20 +88,18 @@ const StartGameScreen = ({ onStartGame }) => {
             value={enteredValue}
           />
           <View style={styles.buttonContainer}>
-            <View style={styles.button}>
-              <Button
-                color={Colors.accent}
-                title="Reset"
-                onPress={resetInputHandler}
-              />
-            </View>
-            <View style={styles.button}>
-              <Button
-                color={Colors.primary}
-                title="Confirm"
-                onPress={confirmInputHandler}
-              />
-            </View>
+            <MainButton
+              style={styles.button}
+              color={Colors.accent}
+              title="Reset"
+              onPress={resetInputHandler}
+            />
+            <MainButton
+              style={styles.button}
+              color={Colors.primary}
+              title="Confirm"
+              onPress={confirmInputHandler}
+            />
           </View>
         </Card>
         {confirmedOutput}
@@ -132,9 +130,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 15,
   },
-  button: {
-    width: 100,
-  },
   input: {
     width: 50,
     textAlign: "center",
@@ -144,7 +139,6 @@ const styles = StyleSheet.create({
     padding: 12,
     alignItems: "center",
   },
-  text: {},
 });
 
 export default StartGameScreen;
