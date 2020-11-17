@@ -32,7 +32,18 @@ const StartGameScreen = () => {
 
   const confirmInputHandler = () => {
     const chosenNumber = +enteredValue;
-    if (chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99) {
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        "Invalid number",
+        "Number has to be a number between 1 and 99",
+        [
+          {
+            onPress: () => resetInputHandler,
+            text: "Okay",
+            style: "default",
+          },
+        ]
+      );
       return;
     }
     setConfirmed(true);
