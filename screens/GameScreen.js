@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, StyleSheet, Button, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
 
-const generateRandomBetween = (min, max, exclude) => {
+const generateRandomBetween = (min = 1, max = 100, exclude = undefined) => {
   min = Math.ceil(min);
   max = Math.ceil(max);
   let randomNumber;
   do {
     randomNumber = Math.floor(Math.random() * (max - min)) + min;
-  } while (exclude !== undefined && randomNumber !== exclude);
+  } while (exclude !== undefined && randomNumber === exclude);
   return randomNumber;
+};
+
+const DIRECTIONS = {
+  UP: 0,
+  DOWN: 1,
 };
 
 const GameScreen = ({ userChoice }) => {
@@ -19,13 +24,54 @@ const GameScreen = ({ userChoice }) => {
     generateRandomBetween(1, 100, userChoice)
   );
 
+  const currentLow = useRef(1);
+  const currentHigh = useRef(100);
+
+  const nextGuessHandler = (direction) => {
+    if (
+      (direction === DIRECTIONS.DOWN && currentGuess < userChoice) ||
+      (direction === DIRECTIONS.UP && currentGuess > userChoice)
+    ) {
+      Alert.alert(
+        "Don't lie",
+        "I'm too smart to be fooled, and you're cheating."
+      );
+      return;
+    }
+
+    switch (direction) {
+      case DIRECTIONS.UP:
+        currentLow.current = currentGuess;
+        break;
+      case DIRECTIONS.DOWN:
+        currentHigh.current = currentGuess;
+        break;
+      default:
+        throw new Error("You shouldn't be able to set anything here.");
+    }
+
+    const newGuess = generateRandomBetween(
+      currentLow.current,
+      currentHigh.current,
+      currentGuess
+    );
+
+    setCurrentGuess(newGuess);
+  };
+
   return (
     <View style={styles.screen}>
       <Text>Opponent's guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.buttonContainer}>
-        <Button title="LOWER" onPress={() => {}} />
-        <Button title="GREATER" onPress={() => {}} />
+        <Button
+          title="LOWER"
+          onPress={() => nextGuessHandler(DIRECTIONS.DOWN)}
+        />
+        <Button
+          title="GREATER"
+          onPress={() => nextGuessHandler(DIRECTIONS.UP)}
+        />
       </Card>
     </View>
   );
@@ -43,6 +89,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 300,
     maxWidth: "80%",
+    padding: 10,
   },
 });
 
