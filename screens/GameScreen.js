@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import defaultStyles from "../constants/defaultStyles";
@@ -29,10 +36,12 @@ const DIRECTIONS = {
   DOWN: 1,
 };
 
-const renderListItem = (value, index) => (
-  <View key={`guess-${index}`} style={styles.listViewItem}>
-    <TitleText style={styles.listIndex}>#{index + 1}</TitleText>
-    <BodyText style={styles.listValue}>{value}</BodyText>
+const renderListItem = (listLength, itemData) => (
+  <View style={styles.listViewItem}>
+    <TitleText style={styles.listIndex}>
+      #{listLength - itemData.index}
+    </TitleText>
+    <BodyText style={styles.listValue}>{itemData.item}</BodyText>
   </View>
 );
 
@@ -113,9 +122,12 @@ const GameScreen = ({ userChoice, onGameOver }) => {
         />
       </Card>
       <View style={styles.listView}>
-        <ScrollView contentContainerStyle={styles.listContainer}>
-          {pastGuesses.map((guess, index) => renderListItem(guess, index))}
-        </ScrollView>
+        <FlatList
+          data={pastGuesses}
+          renderItem={renderListItem.bind(this, pastGuesses.length)}
+          keyExtractor={(_, index) => `guess-${index}`}
+          contentContainerStyle={styles.listContainer}
+        />
       </View>
     </View>
   );
@@ -141,7 +153,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexGrow: 1,
-    alignItems: "center",
     justifyContent: "flex-end",
   },
   listViewItem: {
@@ -151,7 +162,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 15,
     justifyContent: "space-around",
-    width: "60%",
+    width: "100%",
   },
 });
 
