@@ -6,6 +6,8 @@ import defaultStyles from "../constants/defaultStyles";
 import MainButton from "../components/MainButton";
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
+import TitleText from "../components/TitleText";
+import BodyText from "../components/BodyText";
 
 const generateRandomBetween = (min = 1, max = 100, exclude = undefined) => {
   min = Math.ceil(min);
@@ -27,6 +29,13 @@ const DIRECTIONS = {
   DOWN: 1,
 };
 
+const renderListItem = (value, index) => (
+  <View key={`guess-${index}`} style={styles.listItem}>
+    <TitleText style={styles.listIndex}>#{index + 1}</TitleText>
+    <BodyText style={styles.listValue}>{value}</BodyText>
+  </View>
+);
+
 const GameScreen = ({ userChoice, onGameOver }) => {
   const initialGuess = generateRandomBetween(1, 100, userChoice);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
@@ -43,6 +52,11 @@ const GameScreen = ({ userChoice, onGameOver }) => {
         [
           {
             text: "Wow, you're so cool",
+            style: "destructive",
+            onPress: () => {},
+          },
+          {
+            text: "You really suck",
             style: "destructive",
             onPress: () => {},
           },
@@ -98,13 +112,11 @@ const GameScreen = ({ userChoice, onGameOver }) => {
           onPress={() => nextGuessHandler(DIRECTIONS.UP)}
         />
       </Card>
-      <ScrollView>
-        {pastGuesses.map((guess, index) => (
-          <View key={`guess-${index}`}>
-            <Text>{guess}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      <View style={styles.list}>
+        <ScrollView>
+          {pastGuesses.map((guess, index) => renderListItem(guess, index))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -122,6 +134,18 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: "80%",
     padding: 10,
+  },
+  list: {
+    flex: 1,
+    width: "80%",
+  },
+  listItem: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    flexDirection: "row",
+    padding: 15,
+    marginVertical: 15,
+    justifyContent: "space-around",
   },
 });
 
