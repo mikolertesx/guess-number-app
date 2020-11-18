@@ -119,10 +119,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   inputContainer: {
+    width: "80%",
+    minWidth: 300,
+    maxWidth: "95%",
     alignItems: "center",
-    width: 350,
     padding: 12,
-    maxWidth: "85%",
   },
   buttonContainer: {
     flexDirection: "row",
