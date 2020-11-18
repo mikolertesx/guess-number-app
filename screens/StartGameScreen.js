@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Dimensions,
+  Button,
 } from "react-native";
 
 import TitleText from "../components/TitleText";
@@ -20,6 +24,9 @@ const StartGameScreen = ({ onStartGame }) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState(null);
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get("window").width / 4
+  );
 
   const numberInputHandler = (text) => {
     setEnteredValue(() => text.replace(/[^0-9]/g, ""));
@@ -33,6 +40,18 @@ const StartGameScreen = ({ onStartGame }) => {
     setSelectedNumber(+enteredValue);
     hideKeyboard();
   };
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get("window").width / 4);
+    };
+  
+    Dimensions.addEventListener("change", updateLayout);
+
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    }
+  });
 
   const confirmInputHandler = () => {
     const chosenNumber = +enteredValue;
@@ -72,39 +91,47 @@ const StartGameScreen = ({ onStartGame }) => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={hideKeyboard}>
-      <View style={styles.screen}>
-        <TitleText style={styles.title}>Start a New Game!</TitleText>
-        <Card style={styles.inputContainer}>
-          <BodyText>Select a Number</BodyText>
-          <Input
-            style={styles.input}
-            blurOnSubmit
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="number-pad"
-            maxLength={2}
-            onChangeText={numberInputHandler}
-            value={enteredValue}
-          />
-          <View style={styles.buttonContainer}>
-            <MainButton
-              style={styles.button}
-              color={Colors.accent}
-              title="Reset"
-              onPress={resetInputHandler}
-            />
-            <MainButton
-              style={styles.button}
-              color={Colors.primary}
-              title="Confirm"
-              onPress={confirmInputHandler}
-            />
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
+        <TouchableWithoutFeedback onPress={hideKeyboard}>
+          <View style={styles.screen}>
+            <TitleText style={styles.title}>Start a New Game!</TitleText>
+            <Card style={styles.inputContainer}>
+              <BodyText>Select a Number</BodyText>
+              <Input
+                style={styles.input}
+                blurOnSubmit
+                autoCapitalize="none"
+                autoCorrect={false}
+                keyboardType="number-pad"
+                maxLength={2}
+                onChangeText={numberInputHandler}
+                value={enteredValue}
+              />
+              <View style={styles.buttonContainer}>
+                <View style={{ width: buttonWidth }}>
+                  <Button
+                    style={styles.button}
+                    color={Colors.accent}
+                    title="Reset"
+                    onPress={resetInputHandler}
+                  />
+                </View>
+                <View style={{ width: buttonWidth }}>
+                  <Button
+                    style={styles.button}
+                    color={Colors.primary}
+                    title="Confirm"
+                    onPress={confirmInputHandler}
+                  />
+                </View>
+              </View>
+            </Card>
+            {confirmedOutput}
           </View>
-        </Card>
-        {confirmedOutput}
-      </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -125,15 +152,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
   },
+  input: {
+    width: 50,
+    textAlign: "center",
+  },
   buttonContainer: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
     paddingHorizontal: 15,
-  },
-  input: {
-    width: 50,
-    textAlign: "center",
   },
   summaryContainer: {
     marginTop: 20,
