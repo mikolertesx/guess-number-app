@@ -4,8 +4,8 @@ import {
   Text,
   StyleSheet,
   Alert,
-  ScrollView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -107,6 +107,12 @@ const GameScreen = ({ userChoice, onGameOver }) => {
     setPastGuesses((curPastGuesses) => [newGuess, ...curPastGuesses]);
   };
 
+  let listContainerStyle = styles.listView;
+
+  if (Dimensions.get("window").width < 350) {
+    listContainerStyle = styles.listViewBig;
+  }
+
   return (
     <View style={styles.screen}>
       <Text style={defaultStyles.title}>Opponent's guess</Text>
@@ -121,7 +127,7 @@ const GameScreen = ({ userChoice, onGameOver }) => {
           onPress={() => nextGuessHandler(DIRECTIONS.UP)}
         />
       </Card>
-      <View style={styles.listView}>
+      <View style={listContainerStyle}>
         <FlatList
           data={pastGuesses}
           renderItem={renderListItem.bind(this, pastGuesses.length)}
@@ -142,14 +148,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginTop: 20,
-    width: 300,
+    marginTop: Dimensions.get("window").height > 600 ? 20 : 5,
+    width: 400,
     maxWidth: "80%",
     padding: 10,
   },
   listView: {
     flex: 1,
     width: "80%",
+  },
+  listViewBig: {
+    flex: 1,
+    width: "60%",
   },
   listContainer: {
     flexGrow: 1,
