@@ -30,7 +30,7 @@ const DIRECTIONS = {
 };
 
 const renderListItem = (value, index) => (
-  <View key={`guess-${index}`} style={styles.listItem}>
+  <View key={`guess-${index}`} style={styles.listViewItem}>
     <TitleText style={styles.listIndex}>#{index + 1}</TitleText>
     <BodyText style={styles.listValue}>{value}</BodyText>
   </View>
@@ -112,8 +112,8 @@ const GameScreen = ({ userChoice, onGameOver }) => {
           onPress={() => nextGuessHandler(DIRECTIONS.UP)}
         />
       </Card>
-      <View style={styles.list}>
-        <ScrollView>
+      <View style={styles.listView}>
+        <ScrollView contentContainerStyle={styles.listContainer}>
           {pastGuesses.map((guess, index) => renderListItem(guess, index))}
         </ScrollView>
       </View>
@@ -135,17 +135,23 @@ const styles = StyleSheet.create({
     maxWidth: "80%",
     padding: 10,
   },
-  list: {
+  listView: {
     flex: 1,
     width: "80%",
   },
-  listItem: {
+  listContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  listViewItem: {
     borderWidth: 1,
     borderColor: "#ccc",
     flexDirection: "row",
     padding: 15,
     marginVertical: 15,
     justifyContent: "space-around",
+    width: "60%",
   },
 });
 
