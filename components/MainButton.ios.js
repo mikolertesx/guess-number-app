@@ -1,28 +1,15 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/colors";
 
 const MainButton = ({ title, onPress, style, textStyle }) => {
-  let TouchableHandler = TouchableOpacity;
-
-  if (Platform.OS === "android" && Platform.Version >= 21) {
-    TouchableHandler = TouchableNativeFeedback;
-  }
-
   return (
     <View style={{ ...styles.buttonContainer }}>
-      <TouchableHandler onPress={onPress}>
+      <TouchableOpacity onPress={onPress}>
         <View style={{ ...styles.button, ...style }}>
           <Text style={{ ...styles.buttonText, ...textStyle }}>{title}</Text>
         </View>
-      </TouchableHandler>
+      </TouchableOpacity>
     </View>
   );
 };
