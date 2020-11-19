@@ -1,3 +1,4 @@
+import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
@@ -56,6 +57,8 @@ const GameScreen = ({ userChoice, onGameOver }) => {
     Dimensions.get("window").height
   );
 
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+  
   useEffect(() => {
     const updateLayout = () => {
       setAvailableDeviceWidth(Dimensions.get("window").width);
