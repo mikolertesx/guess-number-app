@@ -16,30 +16,31 @@ import SuccessImage from "../assets/img/success.png";
 
 const GameOverScreen = ({ roundsNumber, userNumber, onReset }) => {
   return (
-    <ScrollView>
-      <View style={styles.screen}>
-        <TitleText>The Game is Over!</TitleText>
-        <View style={styles.imageContainer}>
-          <Image
-            fadeDuration={300}
-            source={SuccessImage}
-            style={styles.image}
-            resizeMode="cover"
-          />
+      <ScrollView>
+        <View style={styles.screen}>
+          <TitleText>The Game is Over!</TitleText>
+          <View style={styles.imageContainer}>
+            <Image
+              fadeDuration={300}
+              source={SuccessImage}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.resultContainer}>
+            <BodyText style={styles.resultText}>
+              I only needed{" "}
+              <Text style={styles.highlightText}>{roundsNumber}</Text> tries to
+              guess the number!
+            </BodyText>
+            <BodyText style={styles.resultText}>
+              Number was: <Text style={styles.highlightText}>{userNumber}</Text>
+              .
+            </BodyText>
+          </View>
+          <MainButton title="New Game" onPress={onReset} />
         </View>
-        <View style={styles.resultContainer}>
-          <BodyText style={styles.resultText}>
-            I only needed{" "}
-            <Text style={styles.highlightText}>{roundsNumber}</Text> tries to
-            guess the number!
-          </BodyText>
-          <BodyText style={styles.resultText}>
-            Number was: <Text style={styles.highlightText}>{userNumber}</Text>.
-          </BodyText>
-        </View>
-        <MainButton title="New Game" onPress={onReset} />
-      </View>
-    </ScrollView>
+      </ScrollView>
   );
 };
 
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   image: {
     width: "100%",
